@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const genders = [M, F];
+const genders = ['M', 'F'];
 console.log('genders:', genders);
 
 const maleNames = [
@@ -215,7 +215,33 @@ const lastNames = [
 ];
 console.log('lastNames:', lastNames);
 
-fs.writeFile('people.json', data, err => {
+const randChoice = arr => {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
+
+const people = [];
+
+for (let i = 0; i < 20; i++) {
+  const gender = randChoice(genders);
+
+  let firstName;
+  if (gender === 'M') {
+    firstName = randChoice(maleNames);
+  } else {
+    firstName = randChoice(femaleNames);
+  }
+
+  const lastName = lastNames[Math.floor(Math.random() * (100 - 1 + 1)) + 1];
+
+  const age = Math.floor(Math.random() * (78 - 18 + 1) + 18);
+
+  const personalData = { gender, firstName, lastName, age };
+  people.push(personalData);
+}
+
+const jsonPeople = JSON.stringify(people);
+
+fs.writeFile('people.json', jsonPeople, err => {
   if (err) throw err;
-  console.log('The file has been saved!');
+  console.log('File has been successfully generated! Check people.json');
 });
